@@ -9,3 +9,4 @@ readme = "README.md"
 
 [dependencies]
 clap = { version = "4.2.7", features = ["derive"] }
+colorama = "0.1.0"

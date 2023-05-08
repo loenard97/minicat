@@ -2,6 +2,10 @@ use std::error::Error;
 use std::fs::File;
 use std::io::{self, Read, BufReader, BufRead};
 use clap::Parser;
+use colorama::Colored;
+
+mod coloring;
+use crate::coloring::{coloring_python, coloring_rust};
 
 #[derive(Parser, Debug)]
 #[command(author, version, about, long_about)]
@@ -38,13 +42,35 @@ pub fn run(config: &Config) -> Result<(), Box<dyn Error>> {
 
         if config.pretty_print {
             println!("─────┬─────────────────────────────────────────────────────");
-            println!("     │  File {}", config.file_name.clone().unwrap());
+            println!("     │  File {}", config.file_name.clone().unwrap().style("bold"));
             println!("─────┼─────────────────────────────────────────────────────");
         }
 
         for (i, line) in reader.lines().enumerate() {
             if config.pretty_print {
-                println!(" {: ^width$} │  {}", i+1, line?, width=3);
+                print!(" {: ^width$} │  ", i+1, width=3);
+                let file_name_clone = config.file_name.clone().unwrap();
+                let file_extension = file_name_clone.split('.').last().unwrap();
+                let keywords = match file_extension {
+                    "py" => Some(coloring_python()),
+                    "rs" => Some(coloring_rust()), 
+                    _ => None,
+                };
+                let line = line?;
+                let splits = line.split(' ');
+                for word in splits {
+                    match keywords.clone() {
+                        Some(val) => {
+                            if val.contains(&word) {
+                                print!("{} ", word.to_string().color("green"));
+                            } else {
+                                print!("{} ", word);
+                            }
+                        },
+                        None => print!("{} ", word),
+                    };
+                }
+                println!("");
             } else {
                 println!("{}", line?);
             }
