@@ -1,9 +1,17 @@
+<div align="center">
+
 # minicat
+A small cat clone, with pretty printing, inspired by [bat](https://github.com/sharkdp/bat)
 
-A small cat clone, with pretty printing, inspired by [bat](https://github.com/sharkdp/bat).
+![](https://img.shields.io/github/last-commit/loenard97/minicat?&style=for-the-badge&color=F74C00)
+![](https://img.shields.io/github/repo-size/loenard97/minicat?&style=for-the-badge&color=F74C00)
 
+</div>
+
+
+## Usage
 Output contents of a file to stdout:
-```sh
+```txt
 $ minicat .\poem.txt
 ─────┬─────────────────────────────────────────────────────
      │  File .\poem.txt
@@ -23,5 +31,11 @@ $ minicat .\poem.txt
 Or use stdin as input:
 ```sh
 $ echo "Hello World!" | minicat
-Hello World!
+─────┬─────────────────────────────────────────────────────
+     │  File <stdin>
+─────┼─────────────────────────────────────────────────────
+  1  │  "Hello World!"
+─────┴─────────────────────────────────────────────────────
 ```
+
+Pretty printing is automatically disabled when redirecting stdout.
